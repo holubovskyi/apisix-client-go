@@ -5,7 +5,7 @@ func (client ApiClient) GetUpstream(id string) (map[string]interface{}, error) {
 }
 
 func (client ApiClient) CreateUpstream(data map[string]interface{}) (map[string]interface{}, error) {
-	return client.RunObject("POST", "/upstreams/", &data)
+	return client.RunObject("POST", "/apisix/admin/upstreams/", &data)
 }
 
 func (client ApiClient) UpdateUpstream(id string, data map[string]interface{}) (map[string]interface{}, error) {
