@@ -23,7 +23,7 @@ func (h AddHeadersRoundtripper) RoundTrip(r *http.Request) (*http.Response, erro
 	return h.Nested.RoundTrip(r)
 }
 
-func GetCl(apiKey string, endpoint string) ApiClient {
+func GetCl(apiKey string, endpoint string) (*ApiClient, error) {
 	apiClient := http.DefaultClient
 	headers := make(http.Header, 0)
 	headers.Add("X-API-KEY", apiKey)
@@ -31,10 +31,13 @@ func GetCl(apiKey string, endpoint string) ApiClient {
 		Headers: headers,
 		Nested:  http.DefaultTransport,
 	}
-	return ApiClient{
+
+	c := ApiClient{
 		Endpoint: endpoint,
 		HTTP:     http.DefaultClient,
 	}
+
+	return &c, nil
 }
 
 type ApiClient struct {
