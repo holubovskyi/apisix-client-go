@@ -33,16 +33,17 @@ func GetCl(apiKey string, endpoint string) (*ApiClient, error) {
 	}
 
 	c := ApiClient{
-		Endpoint: endpoint,
-		HTTP:     http.DefaultClient,
+		Endpoint:   endpoint,
+		HTTPClient: http.DefaultClient,
 	}
 
 	return &c, nil
 }
 
 type ApiClient struct {
-	Endpoint string
-	HTTP     *http.Client
+	Endpoint   string
+	HTTPClient *http.Client
+	APIKey     string
 }
 
 func parseHttpResult(res *http.Response, body []byte) (int, []byte, error) {
@@ -77,7 +78,7 @@ func parseHttpResult(res *http.Response, body []byte) (int, []byte, error) {
 
 func (client ApiClient) Get(path string) (int, []byte, error) {
 	url := client.Endpoint + path
-	res, err := client.HTTP.Get(url)
+	res, err := client.HTTPClient.Get(url)
 
 	if err != nil {
 		return 0, nil, err
@@ -96,7 +97,7 @@ func (client ApiClient) Post(path string, jsonBytes []byte) (int, []byte, error)
 	apiUrl := client.Endpoint + path
 
 	log.Printf("[DEBUG] SEND POST -> %v ->  %v", path, string(jsonBytes))
-	res, err := client.HTTP.Post(apiUrl, "application/json; charset=utf-8", bytes.NewReader(jsonBytes))
+	res, err := client.HTTPClient.Post(apiUrl, "application/json; charset=utf-8", bytes.NewReader(jsonBytes))
 
 	if err != nil {
 		return 0, nil, err
@@ -120,7 +121,7 @@ func (client ApiClient) Patch(path string, jsonBytes []byte) (int, []byte, error
 		return 0, nil, err
 	}
 	req.Header.Set("Content-Type", "application/json; charset=utf-8")
-	res, err := client.HTTP.Do(req)
+	res, err := client.HTTPClient.Do(req)
 
 	if err != nil {
 		return 0, nil, err
@@ -144,7 +145,7 @@ func (client ApiClient) Put(path string, jsonBytes []byte) (int, []byte, error) 
 		return 0, nil, err
 	}
 	req.Header.Set("Content-Type", "application/json; charset=utf-8")
-	res, err := client.HTTP.Do(req)
+	res, err := client.HTTPClient.Do(req)
 
 	if err != nil {
 		return 0, nil, err
@@ -166,7 +167,7 @@ func (client ApiClient) Delete(path string) error {
 	if err != nil {
 		return err
 	}
-	res, err := client.HTTP.Do(req)
+	res, err := client.HTTPClient.Do(req)
 
 	if err != nil {
 		return err
@@ -219,4 +220,31 @@ func (client ApiClient) RunObject(method string, url string, data *map[string]in
 	}
 
 	return response, nil
+}
+
+func (c *ApiClient) doRequest(req *http.Request, apiKey *string) ([]byte, error) {
+	key := c.APIKey
+
+	if apiKey != nil {
+		key = *apiKey
+	}
+
+	req.Header.Set("X-API-KEY", key)
+
+	res, err := c.HTTPClient.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer res.Body.Close()
+
+	body, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	if res.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("status: %d, body: %s", res.StatusCode, body)
+	}
+
+	return body, err
 }

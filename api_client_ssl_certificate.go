@@ -1,7 +1,43 @@
 package api_client
 
-func (client ApiClient) GetSslCertificate(id string) (map[string]interface{}, error) {
-	return client.RunObject("GET", "/apisix/admin/ssls/"+id, nil)
+import (
+	"encoding/json"
+	//	"errors"
+	"fmt"
+	"net/http"
+	// "strings"
+)
+
+type SSLCertificate struct {
+	ID          string            `json:"id"`
+	Certificate string            `json:"cert"`
+	PrivateKey  string            `json:"key"`
+	SNIs        []string          `json:"snis"`
+	Labels      map[string]string `json:"labels"`
+}
+
+// func (client ApiClient) GetSslCertificate(id string) (map[string]interface{}, error) {
+// 	return client.RunObject("GET", "/apisix/admin/ssls/"+id, nil)
+// }
+
+func (c *ApiClient) GetSslCertificate(certificateID string, apiKey *string) (*SSLCertificate, error) {
+	req, err := http.NewRequest("GET", fmt.Sprintf("%s/apisix/admin/ssls/%s", c.Endpoint, certificateID), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	body, err := c.doRequest(req, apiKey)
+	if err != nil {
+		return nil, err
+	}
+
+	sslCertificate := SSLCertificate{}
+	err = json.Unmarshal(body, &sslCertificate)
+	if err != nil {
+		return nil, err
+	}
+
+	return &sslCertificate, nil
 }
 
 func (client ApiClient) CreateSslCertificate(data map[string]interface{}) (map[string]interface{}, error) {
