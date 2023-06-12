@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"time"
 )
 
 type AddHeadersRoundtripper struct {
@@ -21,6 +22,12 @@ func (h AddHeadersRoundtripper) RoundTrip(r *http.Request) (*http.Response, erro
 		}
 	}
 	return h.Nested.RoundTrip(r)
+}
+
+type ApiClient struct {
+	Endpoint   string
+	HTTPClient *http.Client
+	APIKey     string
 }
 
 func GetCl(apiKey string, endpoint string) (*ApiClient, error) {
@@ -40,10 +47,32 @@ func GetCl(apiKey string, endpoint string) (*ApiClient, error) {
 	return &c, nil
 }
 
-type ApiClient struct {
-	Endpoint   string
-	HTTPClient *http.Client
-	APIKey     string
+func NewClient(endpoint, apiKey *string) (*ApiClient, error) {
+
+	if endpoint == nil {
+		return nil, fmt.Errorf("The value of the endpoint is not provided")
+	}
+
+	if apiKey == nil {
+		return nil, fmt.Errorf("The value of the API Key is not provided")
+	}
+
+	apiClient := http.DefaultClient
+	headers := make(http.Header, 0)
+	headers.Add("X-API-KEY", *apiKey)
+
+	apiClient.Transport = AddHeadersRoundtripper{
+		Headers: headers,
+		Nested:  http.DefaultTransport,
+	}
+
+	c := ApiClient{
+		HTTPClient: apiClient,
+		Endpoint:   *endpoint,
+		APIKey:     *apiKey,
+	}
+
+	return &c, nil
 }
 
 func parseHttpResult(res *http.Response, body []byte) (int, []byte, error) {
