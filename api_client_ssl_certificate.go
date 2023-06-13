@@ -23,13 +23,13 @@ type SSLCertificate struct {
 // 	return client.RunObject("GET", "/apisix/admin/ssls/"+id, nil)
 // }
 
-func (c *ApiClient) GetSslCertificate(certificateID string, apiKey *string) (*SSLCertificate, error) {
+func (c *ApiClient) GetSslCertificate(certificateID string) (*SSLCertificate, error) {
 	req, err := http.NewRequest("GET", fmt.Sprintf("%s/apisix/admin/ssls/%s", c.Endpoint, certificateID), nil)
 	if err != nil {
 		return nil, err
 	}
 
-	body, err := c.doRequest(req, apiKey)
+	body, err := c.doRequest(req)
 	if err != nil {
 		return nil, err
 	}
@@ -47,7 +47,7 @@ func (c *ApiClient) GetSslCertificate(certificateID string, apiKey *string) (*SS
 // 	return client.RunObject("POST", "/apisix/admin/ssls/", &data)
 // }
 
-func (c *ApiClient) CreateSslCertificate(sslCertificate SSLCertificate, apiKey *string) (*SSLCertificate, error) {
+func (c *ApiClient) CreateSslCertificate(sslCertificate SSLCertificate) (*SSLCertificate, error) {
 	rb, err := json.Marshal(sslCertificate)
 	if err != nil {
 		return nil, err
@@ -58,7 +58,7 @@ func (c *ApiClient) CreateSslCertificate(sslCertificate SSLCertificate, apiKey *
 		return nil, err
 	}
 
-	body, err := c.doRequest(req, apiKey)
+	body, err := c.doRequest(req)
 	if err != nil {
 		return nil, err
 	}

@@ -50,11 +50,11 @@ func GetCl(apiKey string, endpoint string) (*ApiClient, error) {
 func NewClient(endpoint, apiKey *string) (*ApiClient, error) {
 
 	if endpoint == nil {
-		return nil, fmt.Errorf("The value of the endpoint is not provided")
+		return nil, fmt.Errorf("the value of the endpoint is not provided")
 	}
 
 	if apiKey == nil {
-		return nil, fmt.Errorf("The value of the API Key is not provided")
+		return nil, fmt.Errorf("the value of the API Key is not provided")
 	}
 
 	apiClient := http.DefaultClient
@@ -251,12 +251,8 @@ func (client ApiClient) RunObject(method string, url string, data *map[string]in
 	return response, nil
 }
 
-func (c *ApiClient) doRequest(req *http.Request, apiKey *string) ([]byte, error) {
+func (c *ApiClient) doRequest(req *http.Request) ([]byte, error) {
 	key := c.APIKey
-
-	if apiKey != nil {
-		key = *apiKey
-	}
 
 	req.Header.Set("X-API-KEY", key)
 
