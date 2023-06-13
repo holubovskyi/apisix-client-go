@@ -46,9 +46,7 @@ func (c *ApiClient) GetSslCertificate(certificateID string) (*SSLCertificate, er
 // }
 
 func (c *ApiClient) CreateSslCertificate(sslCertificate SSLCertificate) (*SSLCertificate, error) {
-	sslCertificateWithoutID := sslCertificate
-	sslCertificateWithoutID.
-		rb, err := json.Marshal(sslCertificate)
+	rb, err := json.Marshal(sslCertificate)
 	if err != nil {
 		return nil, err
 	}
