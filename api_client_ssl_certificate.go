@@ -17,7 +17,7 @@ type SSLCertificate struct {
 	Labels      map[string]string `json:"labels"`
 }
 
-type SSLCertificateCreationResponse struct {
+type SSLCertificateAPIResponse struct {
 	Key   string         `json:"key"`
 	Value SSLCertificate `json:"value"`
 }
@@ -37,13 +37,14 @@ func (c *ApiClient) GetSslCertificate(certificateID string) (*SSLCertificate, er
 		return nil, err
 	}
 
-	certificate := SSLCertificate{}
-	err = json.Unmarshal(body, &certificate)
+	getResponse := SSLCertificateAPIResponse{}
+	//certificate := SSLCertificate{}
+	err = json.Unmarshal(body, &getResponse)
 	if err != nil {
 		return nil, err
 	}
 
-	return &certificate, nil
+	return &getResponse.Value, nil
 }
 
 // func (client ApiClient) CreateSslCertificate(data map[string]interface{}) (map[string]interface{}, error) {
@@ -66,7 +67,7 @@ func (c *ApiClient) CreateSslCertificate(sslCertificate SSLCertificate) (*SSLCer
 		return nil, err
 	}
 
-	creationResponse := SSLCertificateCreationResponse{}
+	creationResponse := SSLCertificateAPIResponse{}
 	err = json.Unmarshal(body, &creationResponse)
 	if err != nil {
 		return nil, err
