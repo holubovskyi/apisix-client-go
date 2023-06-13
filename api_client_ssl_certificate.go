@@ -53,7 +53,7 @@ func (c *ApiClient) CreateSslCertificate(sslCertificate SSLCertificate) (*SSLCer
 		return nil, err
 	}
 
-	req, err := http.NewRequest("POST", fmt.Sprintf("%s//apisix/admin/ssls/", c.Endpoint), strings.NewReader(string(rb)))
+	req, err := http.NewRequest("POST", fmt.Sprintf("%s/apisix/admin/ssls/", c.Endpoint), strings.NewReader(string(rb)))
 	if err != nil {
 		return nil, err
 	}
