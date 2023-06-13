@@ -15,6 +15,7 @@ type SSLCertificate struct {
 	Certificate string            `json:"cert"`
 	PrivateKey  string            `json:"key"`
 	SNIs        []string          `json:"snis"`
+	Type        string            `json:"type"`
 	Labels      map[string]string `json:"labels"`
 }
 
