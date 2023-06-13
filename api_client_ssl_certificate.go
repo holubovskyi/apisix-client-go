@@ -73,8 +73,6 @@ func (c *ApiClient) CreateSslCertificate(sslCertificate SSLCertificate) (*SSLCer
 	}
 
 	return &creationResponse.Value, nil
-
-	//return &certificate, nil
 }
 
 func (client ApiClient) UpdateSslCertificate(id string, data map[string]interface{}) (map[string]interface{}, error) {
