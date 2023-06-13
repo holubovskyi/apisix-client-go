@@ -2,15 +2,13 @@ package api_client
 
 import (
 	"encoding/json"
-	"strings"
-	//	"errors"
 	"fmt"
 	"net/http"
-	// "strings"
+	"strings"
 )
 
 type SSLCertificate struct {
-	ID          string            `json:"id"`
+	ID          string            `json:"id,omitempty"`
 	Status      uint              `json:"status"`
 	Certificate string            `json:"cert"`
 	PrivateKey  string            `json:"key"`
@@ -48,7 +46,9 @@ func (c *ApiClient) GetSslCertificate(certificateID string) (*SSLCertificate, er
 // }
 
 func (c *ApiClient) CreateSslCertificate(sslCertificate SSLCertificate) (*SSLCertificate, error) {
-	rb, err := json.Marshal(sslCertificate)
+	sslCertificateWithoutID := sslCertificate
+	sslCertificateWithoutID.
+		rb, err := json.Marshal(sslCertificate)
 	if err != nil {
 		return nil, err
 	}
