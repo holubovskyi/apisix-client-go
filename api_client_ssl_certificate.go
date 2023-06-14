@@ -2,6 +2,7 @@ package api_client
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"net/http"
 	"strings"
@@ -22,10 +23,12 @@ type SSLCertificateAPIResponse struct {
 	Value SSLCertificate `json:"value"`
 }
 
-// func (client ApiClient) GetSslCertificate(id string) (map[string]interface{}, error) {
-// 	return client.RunObject("GET", "/apisix/admin/ssls/"+id, nil)
-// }
+type DeleteResponse struct {
+	Key     string `json:"key"`
+	Deleted uint   `json:"deleted"`
+}
 
+// GetSslCertificate - Returns a specifc certificate
 func (c *ApiClient) GetSslCertificate(certificateID string) (*SSLCertificate, error) {
 	req, err := http.NewRequest("GET", fmt.Sprintf("%s/apisix/admin/ssls/%s", c.Endpoint, certificateID), nil)
 	if err != nil {
@@ -38,7 +41,6 @@ func (c *ApiClient) GetSslCertificate(certificateID string) (*SSLCertificate, er
 	}
 
 	getResponse := SSLCertificateAPIResponse{}
-	//certificate := SSLCertificate{}
 	err = json.Unmarshal(body, &getResponse)
 	if err != nil {
 		return nil, err
@@ -47,10 +49,7 @@ func (c *ApiClient) GetSslCertificate(certificateID string) (*SSLCertificate, er
 	return &getResponse.Value, nil
 }
 
-// func (client ApiClient) CreateSslCertificate(data map[string]interface{}) (map[string]interface{}, error) {
-// 	return client.RunObject("POST", "/apisix/admin/ssls/", &data)
-// }
-
+// CreateSslCertificate - Create new certificate
 func (c *ApiClient) CreateSslCertificate(sslCertificate SSLCertificate) (*SSLCertificate, error) {
 	rb, err := json.Marshal(sslCertificate)
 	if err != nil {
@@ -76,10 +75,57 @@ func (c *ApiClient) CreateSslCertificate(sslCertificate SSLCertificate) (*SSLCer
 	return &creationResponse.Value, nil
 }
 
-func (client ApiClient) UpdateSslCertificate(id string, data map[string]interface{}) (map[string]interface{}, error) {
-	return client.RunObject("PATCH", "/apisix/admin/ssls/"+id, &data)
+// func (client ApiClient) UpdateSslCertificate(id string, data map[string]interface{}) (map[string]interface{}, error) {
+// 	return client.RunObject("PATCH", "/apisix/admin/ssls/"+id, &data)
+// }
+
+// UpdateSslCertificate - Updates a certificate
+func (c *ApiClient) UpdateSslCertificate(certificateID string, sslCertificate SSLCertificate) (*SSLCertificate, error) {
+	rb, err := json.Marshal(sslCertificate)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("PATCH", fmt.Sprintf("%s/apisix/admin/ssls/%s", c.Endpoint, certificateID), strings.NewReader(string(rb)))
+	if err != nil {
+		return nil, err
+	}
+
+	body, err := c.doRequest(req)
+	if err != nil {
+		return nil, err
+	}
+
+	updateResponse := SSLCertificateAPIResponse{}
+	err = json.Unmarshal(body, &updateResponse)
+	if err != nil {
+		return nil, err
+	}
+
+	return &updateResponse.Value, nil
 }
 
-func (client ApiClient) DeleteSslCertificate(id string) (err error) {
-	return client.Delete("/apisix/admin/ssls/" + id)
+// DeleteSslCertificate - Deletes a certificate
+func (c *ApiClient) DeleteSslCertificate(certificateID string) error {
+	req, err := http.NewRequest("DELETE", fmt.Sprintf("%s/apisix/admin/ssls/%s", c.Endpoint, certificateID), nil)
+	if err != nil {
+		return err
+	}
+
+	body, err := c.doRequest(req)
+	if err != nil {
+		return err
+	}
+
+	deleteResponse := DeleteResponse{}
+	err = json.Unmarshal(body, &deleteResponse)
+	if err != nil {
+		return err
+	}
+
+	if deleteResponse.Deleted != 1 {
+		return errors.New(string(body))
+	}
+
+	return nil
 }
