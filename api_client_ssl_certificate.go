@@ -123,7 +123,7 @@ func (c *ApiClient) DeleteSslCertificate(certificateID string) error {
 		return err
 	}
 
-	if deleteResponse.Deleted != 1 {
+	if deleteResponse.Deleted != "1" {
 		return errors.New(string(body))
 	}
 
