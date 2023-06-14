@@ -25,7 +25,7 @@ type SSLCertificateAPIResponse struct {
 
 type DeleteResponse struct {
 	Key     string `json:"key"`
-	Deleted uint   `json:"deleted"`
+	Deleted string `json:"deleted"`
 }
 
 // GetSslCertificate - Returns a specifc certificate
