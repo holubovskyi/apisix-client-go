@@ -75,10 +75,6 @@ func (c *ApiClient) CreateSslCertificate(sslCertificate SSLCertificate) (*SSLCer
 	return &creationResponse.Value, nil
 }
 
-// func (client ApiClient) UpdateSslCertificate(id string, data map[string]interface{}) (map[string]interface{}, error) {
-// 	return client.RunObject("PATCH", "/apisix/admin/ssls/"+id, &data)
-// }
-
 // UpdateSslCertificate - Updates a certificate
 func (c *ApiClient) UpdateSslCertificate(certificateID string, sslCertificate SSLCertificate) (*SSLCertificate, error) {
 	rb, err := json.Marshal(sslCertificate)
