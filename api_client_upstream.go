@@ -9,25 +9,25 @@ import (
 )
 
 type Upstream struct {
-	ID              string                     `json:"id,omitempty"`
-	Type            string                     `json:"type"`
-	ServiceName     string                     `json:"service_name"`
-	DiscoveryType   string                     `json:"discovery_type"`
-	Timeout         *TimeoutType               `json:"timeout"`
-	Name            string                     `json:"name"`
-	Desc            string                     `json:"desc"`
-	PassHost        string                     `json:"pass_host"`
-	Scheme          string                     `json:"scheme"`
-	Retries         uint                       `json:"retries"`
-	RetryTimeout    uint                       `json:"retry_timeout"`
-	Labels          map[string]string          `json:"labels"`
-	UpstreamHost    string                     `json:"upstream_host"`
-	HashOn          string                     `json:"hash_on"`
-	Key             string                     `json:"key"`
-	KeepalivePool   *UpstreamKeepAlivePoolType `json:"keepalive_pool"`
-	TLSClientCertID string                     `json:"tls.client_cert_id"`
-	Checks          *UpstreamChecksType        `json:"checks"`
-	Nodes           *[]UpstreamNodeType        `json:"nodes"`
+	ID              string                    `json:"id,omitempty"`
+	Type            string                    `json:"type"`
+	ServiceName     string                    `json:"service_name"`
+	DiscoveryType   string                    `json:"discovery_type"`
+	Timeout         TimeoutType               `json:"timeout"`
+	Name            string                    `json:"name"`
+	Desc            string                    `json:"desc"`
+	PassHost        string                    `json:"pass_host"`
+	Scheme          string                    `json:"scheme"`
+	Retries         uint                      `json:"retries"`
+	RetryTimeout    uint                      `json:"retry_timeout"`
+	Labels          map[string]string         `json:"labels"`
+	UpstreamHost    string                    `json:"upstream_host"`
+	HashOn          string                    `json:"hash_on"`
+	Key             string                    `json:"key"`
+	KeepalivePool   UpstreamKeepAlivePoolType `json:"keepalive_pool"`
+	TLSClientCertID string                    `json:"tls.client_cert_id"`
+	Checks          UpstreamChecksType        `json:"checks"`
+	Nodes           []UpstreamNodeType        `json:"nodes"`
 }
 
 type TimeoutType struct {
@@ -43,21 +43,21 @@ type UpstreamKeepAlivePoolType struct {
 }
 
 type UpstreamChecksType struct {
-	Active  *UpstreamChecksActiveType  `json:"active"`
-	Passive *UpstreamChecksPassiveType `json:"passive"`
+	Active  UpstreamChecksActiveType  `json:"active"`
+	Passive UpstreamChecksPassiveType `json:"passive"`
 }
 
 type UpstreamChecksActiveType struct {
-	Type                   string                             `json:"type"`
-	Timeout                uint                               `json:"timeout"`
-	Concurrency            uint                               `json:"concurrency"`
-	HTTPPath               string                             `json:"http_path"`
-	Host                   string                             `json:"host"`
-	Port                   uint                               `json:"port"`
-	HTTPSVerifyCertificate bool                               `json:"https_verify_certificate"`
-	ReqHeaders             []string                           `json:"req_headers"`
-	Healthy                *UpstreamChecksActiveHealthyType   `json:"healthy"`
-	Unhealthy              *UpstreamChecksActiveUnhealthyType `json:"unhealthy"`
+	Type                   string                            `json:"type"`
+	Timeout                uint                              `json:"timeout"`
+	Concurrency            uint                              `json:"concurrency"`
+	HTTPPath               string                            `json:"http_path"`
+	Host                   string                            `json:"host"`
+	Port                   uint                              `json:"port"`
+	HTTPSVerifyCertificate bool                              `json:"https_verify_certificate"`
+	ReqHeaders             []string                          `json:"req_headers"`
+	Healthy                UpstreamChecksActiveHealthyType   `json:"healthy"`
+	Unhealthy              UpstreamChecksActiveUnhealthyType `json:"unhealthy"`
 }
 
 type UpstreamChecksActiveHealthyType struct {
@@ -75,8 +75,8 @@ type UpstreamChecksActiveUnhealthyType struct {
 }
 
 type UpstreamChecksPassiveType struct {
-	Healthy   *UpstreamChecksPassiveHealthyType   `json:"healthy"`
-	Unhealthy *UpstreamChecksPassiveUnhealthyType `json:"unhealthy"`
+	Healthy   UpstreamChecksPassiveHealthyType   `json:"healthy"`
+	Unhealthy UpstreamChecksPassiveUnhealthyType `json:"unhealthy"`
 }
 
 type UpstreamChecksPassiveHealthyType struct {
