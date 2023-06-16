@@ -52,8 +52,8 @@ type UpstreamChecksActiveType struct {
 	Timeout                uint                               `json:"timeout"`
 	Concurrency            uint                               `json:"concurrency"`
 	HTTPPath               string                             `json:"http_path"`
-	Host                   string                             `json:"host"`
-	Port                   uint                               `json:"port"`
+	Host                   string                             `json:"host,omitempty"`
+	Port                   uint                               `json:"port,omitempty"`
 	HTTPSVerifyCertificate bool                               `json:"https_verify_certificate"`
 	ReqHeaders             []string                           `json:"req_headers,omitempty"`
 	Healthy                *UpstreamChecksActiveHealthyType   `json:"healthy"`
