@@ -27,7 +27,7 @@ type Upstream struct {
 	KeepalivePool   UpstreamKeepAlivePoolType `json:"keepalive_pool,omitempty"`
 	TLSClientCertID string                    `json:"tls.client_cert_id,omitempty"`
 	Checks          UpstreamChecksType        `json:"checks,omitempty"`
-	Nodes           []UpstreamNodeType        `json:"nodes"`
+	Nodes           []UpstreamNodeType        `json:"nodes,omitempty"`
 }
 
 type TimeoutType struct {
