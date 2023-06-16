@@ -21,7 +21,7 @@ type Upstream struct {
 	Retries         uint                       `json:"retries"`
 	RetryTimeout    uint                       `json:"retry_timeout"`
 	Labels          map[string]string          `json:"labels"`
-	UpstreamHost    string                     `json:"upstream_host"`
+	UpstreamHost    string                     `json:"upstream_host,omitempty"`
 	HashOn          string                     `json:"hash_on"`
 	Key             string                     `json:"key"`
 	KeepalivePool   *UpstreamKeepAlivePoolType `json:"keepalive_pool"`
