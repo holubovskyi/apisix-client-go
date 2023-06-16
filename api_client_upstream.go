@@ -18,8 +18,8 @@ type Upstream struct {
 	Desc            string                     `json:"desc,omitempty"`
 	PassHost        string                     `json:"pass_host,omitempty"`
 	Scheme          string                     `json:"scheme,omitempty"`
-	Retries         uint                       `json:"retries,omitempty"`
-	RetryTimeout    uint                       `json:"retry_timeout,omitempty"`
+	Retries         *uint                       `json:"retries,omitempty"`
+	RetryTimeout    *uint                       `json:"retry_timeout,omitempty"`
 	Labels          map[string]string          `json:"labels"`
 	UpstreamHost    string                     `json:"upstream_host,omitempty"`
 	HashOn          string                     `json:"hash_on,omitempty"`
