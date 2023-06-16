@@ -18,16 +18,16 @@ type Upstream struct {
 	Desc            string                     `json:"desc,omitempty"`
 	PassHost        string                     `json:"pass_host,omitempty"`
 	Scheme          string                     `json:"scheme,omitempty"`
-	Retries         uint                       `json:"retries"`
-	RetryTimeout    uint                       `json:"retry_timeout"`
+	Retries         uint                       `json:"retries,omitempty"`
+	RetryTimeout    uint                       `json:"retry_timeout,omitempty"`
 	Labels          map[string]string          `json:"labels"`
 	UpstreamHost    string                     `json:"upstream_host,omitempty"`
 	HashOn          string                     `json:"hash_on,omitempty"`
 	Key             string                     `json:"key,omitempty"`
-	KeepalivePool   *UpstreamKeepAlivePoolType `json:"keepalive_pool"`
-	TLSClientCertID string                     `json:"tls.client_cert_id"`
-	Checks          *UpstreamChecksType        `json:"checks"`
-	Nodes           *[]UpstreamNodeType        `json:"nodes"`
+	KeepalivePool   *UpstreamKeepAlivePoolType `json:"keepalive_pool,omitempty"`
+	TLSClientCertID string                     `json:"tls.client_cert_id,omitempty"`
+	Checks          *UpstreamChecksType        `json:"checks,omitempty"`
+	Nodes           *[]UpstreamNodeType        `json:"nodes,omitempty"`
 }
 
 type TimeoutType struct {
