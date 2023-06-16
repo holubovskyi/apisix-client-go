@@ -92,9 +92,9 @@ type UpstreamChecksPassiveUnhealthyType struct {
 }
 
 type UpstreamNodeType struct {
-	Host   string `tfsdk:"host"`
-	Port   uint   `tfsdk:"port"`
-	Weight uint   `tfsdk:"weight"`
+	Host   string `json:"host"`
+	Port   uint   `json:"port"`
+	Weight uint   `json:"weight"`
 }
 
 // func (client ApiClient) GetUpstream(id string) (map[string]interface{}, error) {
