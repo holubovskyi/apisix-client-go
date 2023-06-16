@@ -43,8 +43,8 @@ type UpstreamKeepAlivePoolType struct {
 }
 
 type UpstreamChecksType struct {
-	Active  *UpstreamChecksActiveType  `json:"active"`
-	Passive *UpstreamChecksPassiveType `json:"passive"`
+	Active  *UpstreamChecksActiveType  `json:"active,omitempty"`
+	Passive *UpstreamChecksPassiveType `json:"passive,omitempty"`
 }
 
 type UpstreamChecksActiveType struct {
