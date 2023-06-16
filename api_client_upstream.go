@@ -11,22 +11,22 @@ import (
 type Upstream struct {
 	ID              string                    `json:"id,omitempty"`
 	Type            string                    `json:"type"`
-	ServiceName     string                    `json:"service_name"`
-	DiscoveryType   string                    `json:"discovery_type"`
-	Timeout         TimeoutType               `json:"timeout"`
-	Name            string                    `json:"name"`
-	Desc            string                    `json:"desc"`
-	PassHost        string                    `json:"pass_host"`
+	ServiceName     string                    `json:"service_name,omitempty"`
+	DiscoveryType   string                    `json:"discovery_type,omitempty"`
+	Timeout         TimeoutType               `json:"timeout,omitempty"`
+	Name            string                    `json:"name,omitempty"`
+	Desc            string                    `json:"desc,omitempty"`
+	PassHost        string                    `json:"pass_host,omitempty"`
 	Scheme          string                    `json:"scheme"`
-	Retries         uint                      `json:"retries"`
-	RetryTimeout    uint                      `json:"retry_timeout"`
+	Retries         uint                      `json:"retries,omitempty"`
+	RetryTimeout    uint                      `json:"retry_timeout,omitempty"`
 	Labels          map[string]string         `json:"labels,omitempty"`
-	UpstreamHost    string                    `json:"upstream_host"`
-	HashOn          string                    `json:"hash_on"`
-	Key             string                    `json:"key"`
-	KeepalivePool   UpstreamKeepAlivePoolType `json:"keepalive_pool"`
-	TLSClientCertID string                    `json:"tls.client_cert_id"`
-	Checks          UpstreamChecksType        `json:"checks"`
+	UpstreamHost    string                    `json:"upstream_host,omitempty"`
+	HashOn          string                    `json:"hash_on,omitempty"`
+	Key             string                    `json:"key,omitempty"`
+	KeepalivePool   UpstreamKeepAlivePoolType `json:"keepalive_pool,omitempty"`
+	TLSClientCertID string                    `json:"tls.client_cert_id,omitempty"`
+	Checks          UpstreamChecksType        `json:"checks,omitempty"`
 	Nodes           []UpstreamNodeType        `json:"nodes"`
 }
 
