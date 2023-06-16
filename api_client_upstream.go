@@ -13,7 +13,7 @@ type Upstream struct {
 	Type            string                    `json:"type"`
 	ServiceName     string                    `json:"service_name,omitempty"`
 	DiscoveryType   string                    `json:"discovery_type,omitempty"`
-	Timeout         TimeoutType               `json:"timeout,omitempty"`
+	Timeout         *TimeoutType              `json:"timeout,omitempty"`
 	Name            string                    `json:"name,omitempty"`
 	Desc            string                    `json:"desc,omitempty"`
 	PassHost        string                    `json:"pass_host,omitempty"`
