@@ -55,7 +55,7 @@ type UpstreamChecksActiveType struct {
 	Host                   string                             `json:"host"`
 	Port                   uint                               `json:"port"`
 	HTTPSVerifyCertificate bool                               `json:"https_verify_certificate"`
-	ReqHeaders             []string                           `json:"req_headers"`
+	ReqHeaders             []string                           `json:"req_headers,omitempty"`
 	Healthy                *UpstreamChecksActiveHealthyType   `json:"healthy"`
 	Unhealthy              *UpstreamChecksActiveUnhealthyType `json:"unhealthy"`
 }
