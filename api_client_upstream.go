@@ -61,17 +61,17 @@ type UpstreamChecksActiveType struct {
 }
 
 type UpstreamChecksActiveHealthyType struct {
-	Interval     *int64   `json:"interval"`
-	HTTPStatuses *[]int64 `json:"http_statuses"`
-	Successes    *int64   `json:"successes"`
+	Interval     int64   `json:"interval"`
+	HTTPStatuses []int64 `json:"http_statuses"`
+	Successes    int64   `json:"successes"`
 }
 
 type UpstreamChecksActiveUnhealthyType struct {
-	Interval     *int64   `json:"interval"`
-	HTTPStatuses *[]int64 `json:"http_statuses"`
-	TCPFailures  *int64   `json:"tcp_failures"`
-	Timeouts     *int64   `json:"timeouts"`
-	HTTPFailures *int64   `json:"http_failures"`
+	Interval     int64   `json:"interval"`
+	HTTPStatuses []int64 `json:"http_statuses"`
+	TCPFailures  int64   `json:"tcp_failures"`
+	Timeouts     int64   `json:"timeouts"`
+	HTTPFailures int64   `json:"http_failures"`
 }
 
 type UpstreamChecksPassiveType struct {
@@ -80,15 +80,15 @@ type UpstreamChecksPassiveType struct {
 }
 
 type UpstreamChecksPassiveHealthyType struct {
-	HTTPStatuses *[]int64 `json:"http_statuses"`
-	Successes    *int64   `json:"successes"`
+	HTTPStatuses []int64 `json:"http_statuses"`
+	Successes    int64   `json:"successes"`
 }
 
 type UpstreamChecksPassiveUnhealthyType struct {
-	HTTPStatuses *[]int64 `json:"http_statuses"`
-	TCPFailures  *int64   `json:"tcp_failures"`
-	Timeouts     *int64   `json:"timeouts"`
-	HTTPFailures *int64   `json:"http_failures"`
+	HTTPStatuses []int64 `json:"http_statuses"`
+	TCPFailures  int64   `json:"tcp_failures"`
+	Timeouts     int64   `json:"timeouts"`
+	HTTPFailures int64   `json:"http_failures"`
 }
 
 type UpstreamNodeType struct {
