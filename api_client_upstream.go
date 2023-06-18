@@ -2,7 +2,7 @@ package api_client
 
 import (
 	"encoding/json"
-	// "errors"
+	"errors"
 	"fmt"
 	"net/http"
 	"strings"
@@ -97,10 +97,6 @@ type UpstreamNodeType struct {
 	Weight uint   `json:"weight"`
 }
 
-// func (client ApiClient) GetUpstream(id string) (map[string]interface{}, error) {
-// 	return client.RunObject("GET", "/apisix/admin/upstreams/"+id, nil)
-// }
-
 type UpstreamAPIResponse struct {
 	Key   string   `json:"key"`
 	Value Upstream `json:"value"`
@@ -127,9 +123,6 @@ func (c *ApiClient) GetUpstream(upstreamID string) (*Upstream, error) {
 	return &getResponse.Value, nil
 }
 
-//	func (client ApiClient) CreateUpstream(data map[string]interface{}) (map[string]interface{}, error) {
-//		return client.RunObject("POST", "/apisix/admin/upstreams/", &data)
-//	}
 func (c *ApiClient) CreateUpstream(upstream Upstream) (*Upstream, error) {
 	rb, err := json.Marshal(upstream)
 	if err != nil {
@@ -155,10 +148,53 @@ func (c *ApiClient) CreateUpstream(upstream Upstream) (*Upstream, error) {
 	return &creationResponse.Value, nil
 }
 
-func (client ApiClient) UpdateUpstream(id string, data map[string]interface{}) (map[string]interface{}, error) {
-	return client.RunObject("PATCH", "/apisix/admin/upstreams/"+id, &data)
+// UpdateUpstream - Updates an upstream
+func (c *ApiClient) UpdateUpstream(upstreamID string, upstream Upstream) (*Upstream, error) {
+	rb, err := json.Marshal(upstream)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("PATCH", fmt.Sprintf("%s/apisix/admin/upstreams/%s", c.Endpoint, upstreamID), strings.NewReader(string(rb)))
+	if err != nil {
+		return nil, err
+	}
+
+	body, err := c.doRequest(req)
+	if err != nil {
+		return nil, err
+	}
+
+	updateResponse := UpstreamAPIResponse{}
+	err = json.Unmarshal(body, &updateResponse)
+	if err != nil {
+		return nil, err
+	}
+
+	return &updateResponse.Value, nil
 }
 
-func (client ApiClient) DeleteUpstream(id string) (err error) {
-	return client.Delete("/apisix/admin/upstreams/" + id)
+// DeleteUpstream - Deletes an upstream
+func (c *ApiClient) DeleteUpstream(upstreamID string) error {
+	req, err := http.NewRequest("DELETE", fmt.Sprintf("%s/apisix/admin/upstreams/%s", c.Endpoint, upstreamID), nil)
+	if err != nil {
+		return err
+	}
+
+	body, err := c.doRequest(req)
+	if err != nil {
+		return err
+	}
+
+	deleteResponse := DeleteResponse{}
+	err = json.Unmarshal(body, &deleteResponse)
+	if err != nil {
+		return err
+	}
+
+	if deleteResponse.Deleted != "1" {
+		return errors.New(string(body))
+	}
+
+	return nil
 }
