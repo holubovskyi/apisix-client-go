@@ -31,15 +31,15 @@ type Upstream struct {
 }
 
 type TimeoutType struct {
-	Connect uint `json:"connect"`
-	Send    uint `json:"send"`
-	Read    uint `json:"read"`
+	Connect int64 `json:"connect"`
+	Send    int64 `json:"send"`
+	Read    int64 `json:"read"`
 }
 
 type UpstreamKeepAlivePoolType struct {
-	Size        uint `json:"size"`
-	IdleTimeout uint `json:"idle_timeout"`
-	Requests    uint `json:"requests"`
+	Size        int64 `json:"size"`
+	IdleTimeout int64 `json:"idle_timeout"`
+	Requests    int64 `json:"requests"`
 }
 
 type UpstreamChecksType struct {
@@ -48,53 +48,53 @@ type UpstreamChecksType struct {
 }
 
 type UpstreamChecksActiveType struct {
-	Type                   string                             `json:"type"`
-	Timeout                uint                               `json:"timeout"`
-	Concurrency            uint                               `json:"concurrency"`
-	HTTPPath               string                             `json:"http_path"`
-	Host                   string                             `json:"host,omitempty"`
-	Port                   uint                               `json:"port,omitempty"`
-	HTTPSVerifyCertificate bool                               `json:"https_verify_certificate"`
-	ReqHeaders             []string                           `json:"req_headers,omitempty"`
-	Healthy                *UpstreamChecksActiveHealthyType   `json:"healthy"`
-	Unhealthy              *UpstreamChecksActiveUnhealthyType `json:"unhealthy"`
+	Type                   *string                            `json:"type"`
+	Timeout                *int64                             `json:"timeout"`
+	Concurrency            *int64                             `json:"concurrency"`
+	HTTPPath               *string                            `json:"http_path"`
+	Host                   *string                            `json:"host,omitempty"`
+	Port                   *int64                             `json:"port,omitempty"`
+	HTTPSVerifyCertificate *bool                              `json:"https_verify_certificate"`
+	ReqHeaders             *[]string                          `json:"req_headers,omitempty"`
+	Healthy                *UpstreamChecksActiveHealthyType   `json:"healthy,omitempty"`
+	Unhealthy              *UpstreamChecksActiveUnhealthyType `json:"unhealthy,omitempty"`
 }
 
 type UpstreamChecksActiveHealthyType struct {
-	Interval     uint   `json:"interval"`
-	HTTPStatuses []uint `json:"http_statuses"`
-	Successes    uint   `json:"successes"`
+	Interval     *int64   `json:"interval"`
+	HTTPStatuses *[]int64 `json:"http_statuses"`
+	Successes    *int64   `json:"successes"`
 }
 
 type UpstreamChecksActiveUnhealthyType struct {
-	Interval     uint   `json:"interval"`
-	HTTPStatuses []uint `json:"http_statuses"`
-	TCPFailures  uint   `json:"tcp_failures"`
-	Timeouts     uint   `json:"timeouts"`
-	HTTPFailures uint   `json:"http_failures"`
+	Interval     *int64   `json:"interval"`
+	HTTPStatuses *[]int64 `json:"http_statuses"`
+	TCPFailures  *int64   `json:"tcp_failures"`
+	Timeouts     *int64   `json:"timeouts"`
+	HTTPFailures *int64   `json:"http_failures"`
 }
 
 type UpstreamChecksPassiveType struct {
-	Healthy   *UpstreamChecksPassiveHealthyType   `json:"healthy"`
-	Unhealthy *UpstreamChecksPassiveUnhealthyType `json:"unhealthy"`
+	Healthy   *UpstreamChecksPassiveHealthyType   `json:"healthy,omitempty"`
+	Unhealthy *UpstreamChecksPassiveUnhealthyType `json:"unhealthy,omitempty"`
 }
 
 type UpstreamChecksPassiveHealthyType struct {
-	HTTPStatuses []uint `json:"http_statuses"`
-	Successes    uint   `json:"successes"`
+	HTTPStatuses *[]int64 `json:"http_statuses"`
+	Successes    *int64   `json:"successes"`
 }
 
 type UpstreamChecksPassiveUnhealthyType struct {
-	HTTPStatuses []uint `json:"http_statuses"`
-	TCPFailures  uint   `json:"tcp_failures"`
-	Timeouts     uint   `json:"timeouts"`
-	HTTPFailures uint   `json:"http_failures"`
+	HTTPStatuses *[]int64 `json:"http_statuses"`
+	TCPFailures  *int64   `json:"tcp_failures"`
+	Timeouts     *int64   `json:"timeouts"`
+	HTTPFailures *int64   `json:"http_failures"`
 }
 
 type UpstreamNodeType struct {
 	Host   string `json:"host"`
-	Port   uint   `json:"port"`
-	Weight uint   `json:"weight"`
+	Port   int64  `json:"port"`
+	Weight int64  `json:"weight"`
 }
 
 type UpstreamAPIResponse struct {
