@@ -26,7 +26,7 @@ type Upstream struct {
 	Key             *string                    `json:"key,omitempty"`
 	KeepalivePool   *UpstreamKeepAlivePoolType `json:"keepalive_pool,omitempty"`
 	TLSClientCertID *string                    `json:"tls.client_cert_id,omitempty"`
-	Checks          *UpstreamChecksType        `json:"checks,omitempty"`
+	Checks          UpstreamChecksType        `json:"checks,omitempty"`
 	Nodes           *[]UpstreamNodeType        `json:"nodes,omitempty"`
 }
 
@@ -43,8 +43,8 @@ type UpstreamKeepAlivePoolType struct {
 }
 
 type UpstreamChecksType struct {
-	Active  *UpstreamChecksActiveType  `json:"active,omitempty"`
-	Passive *UpstreamChecksPassiveType `json:"passive,omitempty"`
+	Active  UpstreamChecksActiveType  `json:"active,omitempty"`
+	Passive UpstreamChecksPassiveType `json:"passive,omitempty"`
 }
 
 type UpstreamChecksActiveType struct {
@@ -56,8 +56,8 @@ type UpstreamChecksActiveType struct {
 	Port                   *int64                             `json:"port,omitempty"`
 	HTTPSVerifyCertificate bool                               `json:"https_verify_certificate"`
 	ReqHeaders             []string                           `json:"req_headers,omitempty"`
-	Healthy                *UpstreamChecksActiveHealthyType   `json:"healthy,omitempty"`
-	Unhealthy              *UpstreamChecksActiveUnhealthyType `json:"unhealthy,omitempty"`
+	Healthy                UpstreamChecksActiveHealthyType   `json:"healthy,omitempty"`
+	Unhealthy              UpstreamChecksActiveUnhealthyType `json:"unhealthy,omitempty"`
 }
 
 type UpstreamChecksActiveHealthyType struct {
@@ -75,8 +75,8 @@ type UpstreamChecksActiveUnhealthyType struct {
 }
 
 type UpstreamChecksPassiveType struct {
-	Healthy   *UpstreamChecksPassiveHealthyType   `json:"healthy,omitempty"`
-	Unhealthy *UpstreamChecksPassiveUnhealthyType `json:"unhealthy,omitempty"`
+	Healthy   UpstreamChecksPassiveHealthyType   `json:"healthy,omitempty"`
+	Unhealthy UpstreamChecksPassiveUnhealthyType `json:"unhealthy,omitempty"`
 }
 
 type UpstreamChecksPassiveHealthyType struct {
