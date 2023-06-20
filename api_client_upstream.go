@@ -168,6 +168,7 @@ func (c *ApiClient) GetUpstream(upstreamID string) (*Upstream, error) {
 	return &getResponse.Value, nil
 }
 
+// CreateUpstream - Create an upstream
 func (c *ApiClient) CreateUpstream(upstream Upstream) (*Upstream, error) {
 	rb, err := json.Marshal(upstream)
 	if err != nil {
