@@ -30,6 +30,28 @@ type Upstream struct {
 	Nodes           *[]UpstreamNodeType        `json:"nodes,omitempty"`
 }
 
+type UpstreamUpdate struct {
+	ID              *string                    `json:"id,omitempty"`
+	Type            *string                    `json:"type"`
+	ServiceName     *string                    `json:"service_name,omitempty"`
+	DiscoveryType   *string                    `json:"discovery_type"`
+	Timeout         *TimeoutType               `json:"timeout"`
+	Name            *string                    `json:"name"`
+	Desc            *string                    `json:"desc"`
+	PassHost        *string                    `json:"pass_host"`
+	Scheme          *string                    `json:"scheme"`
+	Retries         *int64                     `json:"retries"`
+	RetryTimeout    *int64                     `json:"retry_timeout"`
+	Labels          map[string]string          `json:"labels"`
+	UpstreamHost    *string                    `json:"upstream_host"`
+	HashOn          *string                    `json:"hash_on"`
+	Key             *string                    `json:"key"`
+	KeepalivePool   *UpstreamKeepAlivePoolType `json:"keepalive_pool"`
+	TLSClientCertID *string                    `json:"tls.client_cert_id"`
+	Checks          *UpstreamChecksTypeUpdate  `json:"checks"`
+	Nodes           *[]UpstreamNodeType        `json:"nodes,omitempty"`
+}
+
 type TimeoutType struct {
 	Connect int64 `json:"connect"`
 	Send    int64 `json:"send"`
@@ -47,6 +69,11 @@ type UpstreamChecksType struct {
 	Passive *UpstreamChecksPassiveType `json:"passive,omitempty"`
 }
 
+type UpstreamChecksTypeUpdate struct {
+	Active  *UpstreamChecksActiveTypeUpdate  `json:"active"`
+	Passive *UpstreamChecksPassiveTypeUpdate `json:"passive"`
+}
+
 type UpstreamChecksActiveType struct {
 	Type                   string                             `json:"type"`
 	Timeout                int64                              `json:"timeout"`
@@ -58,6 +85,19 @@ type UpstreamChecksActiveType struct {
 	ReqHeaders             []string                           `json:"req_headers,omitempty"`
 	Healthy                *UpstreamChecksActiveHealthyType   `json:"healthy,omitempty"`
 	Unhealthy              *UpstreamChecksActiveUnhealthyType `json:"unhealthy,omitempty"`
+}
+
+type UpstreamChecksActiveTypeUpdate struct {
+	Type                   string                             `json:"type"`
+	Timeout                int64                              `json:"timeout"`
+	Concurrency            int64                              `json:"concurrency"`
+	HTTPPath               string                             `json:"http_path"`
+	Host                   *string                            `json:"host"`
+	Port                   *int64                             `json:"port"`
+	HTTPSVerifyCertificate bool                               `json:"https_verify_certificate"`
+	ReqHeaders             []string                           `json:"req_headers"`
+	Healthy                *UpstreamChecksActiveHealthyType   `json:"healthy"`
+	Unhealthy              *UpstreamChecksActiveUnhealthyType `json:"unhealthy"`
 }
 
 type UpstreamChecksActiveHealthyType struct {
@@ -77,6 +117,11 @@ type UpstreamChecksActiveUnhealthyType struct {
 type UpstreamChecksPassiveType struct {
 	Healthy   *UpstreamChecksPassiveHealthyType   `json:"healthy,omitempty"`
 	Unhealthy *UpstreamChecksPassiveUnhealthyType `json:"unhealthy,omitempty"`
+}
+
+type UpstreamChecksPassiveTypeUpdate struct {
+	Healthy   *UpstreamChecksPassiveHealthyType   `json:"healthy"`
+	Unhealthy *UpstreamChecksPassiveUnhealthyType `json:"unhealthy"`
 }
 
 type UpstreamChecksPassiveHealthyType struct {
@@ -149,7 +194,7 @@ func (c *ApiClient) CreateUpstream(upstream Upstream) (*Upstream, error) {
 }
 
 // UpdateUpstream - Updates an upstream
-func (c *ApiClient) UpdateUpstream(upstreamID string, upstream Upstream) (*Upstream, error) {
+func (c *ApiClient) UpdateUpstream(upstreamID string, upstream UpstreamUpdate) (*Upstream, error) {
 	rb, err := json.Marshal(upstream)
 	if err != nil {
 		return nil, err
