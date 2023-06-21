@@ -9,14 +9,25 @@ import (
 )
 
 type Service struct {
-	ID              *string                `json:"id,omitempty"`
-	Name            *string                `json:"name,omitempty"`
-	Description     *string                `json:"desc,omitempty"`
-	EnableWebsocket *bool                  `json:"enable_websocket"`
-	Hosts           *[]string              `json:"hosts,omitempty"`
-	Labels          *map[string]string     `json:"labels,omitempty"`
-	Plugins         map[string]interface{} `json:"plugins,omitempty"`
-	UpstreamId      *string                `json:"upstream_id"`
+	ID              *string                 `json:"id,omitempty"`
+	Name            *string                 `json:"name,omitempty"`
+	Description     *string                 `json:"desc,omitempty"`
+	EnableWebsocket *bool                   `json:"enable_websocket"`
+	Hosts           *[]string               `json:"hosts,omitempty"`
+	Labels          *map[string]string      `json:"labels,omitempty"`
+	Plugins         *map[string]interface{} `json:"plugins,omitempty"`
+	UpstreamId      *string                 `json:"upstream_id"`
+}
+
+type ServiceUpdate struct {
+	ID              *string                 `json:"id,omitempty"`
+	Name            *string                 `json:"name"`
+	Description     *string                 `json:"desc"`
+	EnableWebsocket *bool                   `json:"enable_websocket"`
+	Hosts           *[]string               `json:"hosts"`
+	Labels          *map[string]string      `json:"labels"`
+	Plugins         *map[string]interface{} `json:"plugins"`
+	UpstreamId      *string                 `json:"upstream_id"`
 }
 
 type ServiceAPIResponse struct {
@@ -72,7 +83,7 @@ func (c *ApiClient) CreateService(service Service) (*Service, error) {
 }
 
 // UpdateService - Updates a service
-func (c *ApiClient) UpdateService(serviceID string, service Service) (*Service, error) {
+func (c *ApiClient) UpdateService(serviceID string, service ServiceUpdate) (*Service, error) {
 	rb, err := json.Marshal(service)
 	if err != nil {
 		return nil, err
