@@ -16,18 +16,7 @@ type Service struct {
 	Hosts           *[]string               `json:"hosts,omitempty"`
 	Labels          *map[string]string      `json:"labels,omitempty"`
 	Plugins         *map[string]interface{} `json:"plugins,omitempty"`
-	UpstreamId      *string                 `json:"upstream_id"`
-}
-
-type ServiceUpdate struct {
-	ID              *string                 `json:"id,omitempty"`
-	Name            *string                 `json:"name"`
-	Description     *string                 `json:"desc"`
-	EnableWebsocket *bool                   `json:"enable_websocket"`
-	Hosts           *[]string               `json:"hosts"`
-	Labels          *map[string]string      `json:"labels"`
-	Plugins         *map[string]interface{} `json:"plugins"`
-	UpstreamId      *string                 `json:"upstream_id"`
+	UpstreamId      *string                 `json:"upstream_id,omitempty"`
 }
 
 type ServiceAPIResponse struct {
@@ -83,13 +72,13 @@ func (c *ApiClient) CreateService(service Service) (*Service, error) {
 }
 
 // UpdateService - Updates a service
-func (c *ApiClient) UpdateService(serviceID string, service ServiceUpdate) (*Service, error) {
+func (c *ApiClient) UpdateService(serviceID string, service Service) (*Service, error) {
 	rb, err := json.Marshal(service)
 	if err != nil {
 		return nil, err
 	}
 
-	req, err := http.NewRequest("PATCH", fmt.Sprintf("%s/apisix/admin/services/%s", c.Endpoint, serviceID), strings.NewReader(string(rb)))
+	req, err := http.NewRequest("PUT", fmt.Sprintf("%s/apisix/admin/services/%s", c.Endpoint, serviceID), strings.NewReader(string(rb)))
 	if err != nil {
 		return nil, err
 	}
