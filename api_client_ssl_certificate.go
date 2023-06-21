@@ -15,7 +15,7 @@ type SSLCertificate struct {
 	PrivateKey  string            `json:"key"`
 	SNIs        []string          `json:"snis"`
 	Type        string            `json:"type"`
-	Labels      map[string]string `json:"labels"`
+	Labels      map[string]string `json:"labels,omitempty"`
 }
 
 type SSLCertificateAPIResponse struct {
@@ -82,7 +82,7 @@ func (c *ApiClient) UpdateSslCertificate(certificateID string, sslCertificate SS
 		return nil, err
 	}
 
-	req, err := http.NewRequest("PATCH", fmt.Sprintf("%s/apisix/admin/ssls/%s", c.Endpoint, certificateID), strings.NewReader(string(rb)))
+	req, err := http.NewRequest("PUT", fmt.Sprintf("%s/apisix/admin/ssls/%s", c.Endpoint, certificateID), strings.NewReader(string(rb)))
 	if err != nil {
 		return nil, err
 	}
