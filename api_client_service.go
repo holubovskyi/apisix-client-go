@@ -12,7 +12,7 @@ type Service struct {
 	ID              *string                 `json:"id,omitempty"`
 	Name            *string                 `json:"name,omitempty"`
 	Description     *string                 `json:"desc,omitempty"`
-	EnableWebsocket *bool                   `json:"enable_websocket"`
+	EnableWebsocket *bool                   `json:"enable_websocket,omitempty"`
 	Hosts           *[]string               `json:"hosts,omitempty"`
 	Labels          *map[string]string      `json:"labels,omitempty"`
 	Plugins         *map[string]interface{} `json:"plugins,omitempty"`
@@ -35,7 +35,7 @@ type ServiceAPIResponse struct {
 	Value Service `json:"value"`
 }
 
-// GetUpstream - Returns a specific service
+// GetService- Returns a specific service
 func (c *ApiClient) GetService(serviceID string) (*Service, error) {
 	req, err := http.NewRequest("GET", fmt.Sprintf("%s/apisix/admin/services/%s", c.Endpoint, serviceID), nil)
 	if err != nil {
