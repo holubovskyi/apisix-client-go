@@ -1,2 +1,2 @@
-## Apache APISISX Client (Go)
+## Apache APISIx Client (Go)
 
