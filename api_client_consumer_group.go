@@ -10,8 +10,8 @@ import (
 
 type ConsumerGroup struct {
 	ID          *string                 `json:"id"`
-	Description *string                 `json:"desc"`
-	Labels      *map[string]string      `json:"labels"`
+	Description *string                 `json:"desc,omitempty"`
+	Labels      *map[string]string      `json:"labels,omitempty"`
 	Plugins     *map[string]interface{} `json:"plugins"`
 }
 
