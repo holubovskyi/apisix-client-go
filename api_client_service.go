@@ -1,17 +1,123 @@
 package api_client
 
-func (client ApiClient) GetService(id string) (map[string]interface{}, error) {
-	return client.RunObject("GET", "/apisix/admin/services/"+id, nil)
+import (
+	"encoding/json"
+	"errors"
+	"fmt"
+	"net/http"
+	"strings"
+)
+
+type Service struct {
+	ID              *string                 `json:"id,omitempty"`
+	Name            *string                 `json:"name,omitempty"`
+	Description     *string                 `json:"desc,omitempty"`
+	EnableWebsocket *bool                   `json:"enable_websocket,omitempty"`
+	Hosts           *[]string               `json:"hosts,omitempty"`
+	Labels          *map[string]string      `json:"labels,omitempty"`
+	Plugins         *map[string]interface{} `json:"plugins,omitempty"`
+	UpstreamId      *string                 `json:"upstream_id,omitempty"`
 }
 
-func (client ApiClient) CreateService(data map[string]interface{}) (map[string]interface{}, error) {
-	return client.RunObject("POST", "/apisix/admin/services/", &data)
+type ServiceAPIResponse struct {
+	Key   string  `json:"key"`
+	Value Service `json:"value"`
 }
 
-func (client ApiClient) UpdateService(id string, data map[string]interface{}) (map[string]interface{}, error) {
-	return client.RunObject("PATCH", "/apisix/admin/services/"+id, &data)
+// GetService- Returns a specific service
+func (c *ApiClient) GetService(serviceID string) (*Service, error) {
+	req, err := http.NewRequest("GET", fmt.Sprintf("%s/apisix/admin/services/%s", c.Endpoint, serviceID), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	body, err := c.doRequest(req)
+	if err != nil {
+		return nil, err
+	}
+
+	getResponse := ServiceAPIResponse{}
+	err = json.Unmarshal(body, &getResponse)
+	if err != nil {
+		return nil, err
+	}
+
+	return &getResponse.Value, nil
 }
 
-func (client ApiClient) DeleteService(id string) (err error) {
-	return client.Delete("/apisix/admin/services/" + id)
+// CreateService - Creates a service
+func (c *ApiClient) CreateService(service Service) (*Service, error) {
+	rb, err := json.Marshal(service)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", fmt.Sprintf("%s/apisix/admin/services/", c.Endpoint), strings.NewReader(string(rb)))
+	if err != nil {
+		return nil, err
+	}
+
+	body, err := c.doRequest(req)
+	if err != nil {
+		return nil, err
+	}
+
+	creationResponse := ServiceAPIResponse{}
+	err = json.Unmarshal(body, &creationResponse)
+	if err != nil {
+		return nil, err
+	}
+
+	return &creationResponse.Value, nil
+}
+
+// UpdateService - Updates a service
+func (c *ApiClient) UpdateService(serviceID string, service Service) (*Service, error) {
+	rb, err := json.Marshal(service)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("PUT", fmt.Sprintf("%s/apisix/admin/services/%s", c.Endpoint, serviceID), strings.NewReader(string(rb)))
+	if err != nil {
+		return nil, err
+	}
+
+	body, err := c.doRequest(req)
+	if err != nil {
+		return nil, err
+	}
+
+	updateResponse := ServiceAPIResponse{}
+	err = json.Unmarshal(body, &updateResponse)
+	if err != nil {
+		return nil, err
+	}
+
+	return &updateResponse.Value, nil
+}
+
+// DeleteService - Deletes a service
+func (c *ApiClient) DeleteService(serviceID string) error {
+	req, err := http.NewRequest("DELETE", fmt.Sprintf("%s/apisix/admin/services/%s", c.Endpoint, serviceID), nil)
+	if err != nil {
+		return err
+	}
+
+	body, err := c.doRequest(req)
+	if err != nil {
+		return err
+	}
+
+	deleteResponse := DeleteResponse{}
+	err = json.Unmarshal(body, &deleteResponse)
+	if err != nil {
+		return err
+	}
+
+	if deleteResponse.Deleted != "1" {
+		return errors.New(string(body))
+	}
+
+	return nil
 }
