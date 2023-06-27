@@ -9,13 +9,13 @@ import (
 )
 
 type SSLCertificate struct {
-	ID          string            `json:"id,omitempty"`
-	Status      uint              `json:"status"`
-	Certificate string            `json:"cert"`
-	PrivateKey  string            `json:"key"`
-	SNIs        []string          `json:"snis"`
-	Type        string            `json:"type"`
-	Labels      map[string]string `json:"labels,omitempty"`
+	ID          *string            `json:"id,omitempty"`
+	Status      *int64             `json:"status"`
+	Certificate *string            `json:"cert"`
+	PrivateKey  *string            `json:"key"`
+	SNIs        *[]string          `json:"snis"`
+	Type        *string            `json:"type"`
+	Labels      *map[string]string `json:"labels,omitempty"`
 }
 
 type SSLCertificateAPIResponse struct {
