@@ -56,10 +56,6 @@ func NewClient(endpoint, apiKey *string) (*ApiClient, error) {
 }
 
 func (c *ApiClient) doRequest(req *http.Request) ([]byte, error) {
-	key := c.APIKey
-
-	req.Header.Set("X-API-KEY", key)
-
 	res, err := c.HTTPClient.Do(req)
 	if err != nil {
 		return nil, err
