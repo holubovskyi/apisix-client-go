@@ -25,7 +25,7 @@ type Upstream struct {
 	HashOn          *string                    `json:"hash_on,omitempty"`
 	Key             *string                    `json:"key,omitempty"`
 	KeepalivePool   *UpstreamKeepAlivePoolType `json:"keepalive_pool,omitempty"`
-	TLSClientCertID *string                    `json:"tls.client_cert_id,omitempty"`
+	TLSClientCertID *UpstreamTLS               `json:"tls,omitempty"`
 	Checks          *UpstreamChecksType        `json:"checks,omitempty"`
 	Nodes           *[]UpstreamNodeType        `json:"nodes,omitempty"`
 }
@@ -40,6 +40,10 @@ type UpstreamKeepAlivePoolType struct {
 	Size        int64 `json:"size"`
 	IdleTimeout int64 `json:"idle_timeout"`
 	Requests    int64 `json:"requests"`
+}
+
+type UpstreamTLS struct {
+	ClientCertID string `json:"client_cert_id"`
 }
 
 type UpstreamChecksType struct {
