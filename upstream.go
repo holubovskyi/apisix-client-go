@@ -9,25 +9,25 @@ import (
 )
 
 type Upstream struct {
-	ID              *string                    `json:"id,omitempty"`
-	Type            *string                    `json:"type"`
-	ServiceName     *string                    `json:"service_name,omitempty"`
-	DiscoveryType   *string                    `json:"discovery_type,omitempty"`
-	Timeout         *TimeoutType               `json:"timeout,omitempty"`
-	Name            *string                    `json:"name,omitempty"`
-	Desc            *string                    `json:"desc,omitempty"`
-	PassHost        *string                    `json:"pass_host,omitempty"`
-	Scheme          *string                    `json:"scheme,omitempty"`
-	Retries         *int64                     `json:"retries,omitempty"`
-	RetryTimeout    *int64                     `json:"retry_timeout,omitempty"`
-	Labels          *map[string]string         `json:"labels,omitempty"`
-	UpstreamHost    *string                    `json:"upstream_host,omitempty"`
-	HashOn          *string                    `json:"hash_on,omitempty"`
-	Key             *string                    `json:"key,omitempty"`
-	KeepalivePool   *UpstreamKeepAlivePoolType `json:"keepalive_pool,omitempty"`
-	TLSClientCertID *UpstreamTLS               `json:"tls,omitempty"`
-	Checks          *UpstreamChecksType        `json:"checks,omitempty"`
-	Nodes           *[]UpstreamNodeType        `json:"nodes,omitempty"`
+	ID            *string                    `json:"id,omitempty"`
+	Type          *string                    `json:"type"`
+	ServiceName   *string                    `json:"service_name,omitempty"`
+	DiscoveryType *string                    `json:"discovery_type,omitempty"`
+	Timeout       *TimeoutType               `json:"timeout,omitempty"`
+	Name          *string                    `json:"name,omitempty"`
+	Desc          *string                    `json:"desc,omitempty"`
+	PassHost      *string                    `json:"pass_host,omitempty"`
+	Scheme        *string                    `json:"scheme,omitempty"`
+	Retries       *int64                     `json:"retries,omitempty"`
+	RetryTimeout  *int64                     `json:"retry_timeout,omitempty"`
+	Labels        *map[string]string         `json:"labels,omitempty"`
+	UpstreamHost  *string                    `json:"upstream_host,omitempty"`
+	HashOn        *string                    `json:"hash_on,omitempty"`
+	Key           *string                    `json:"key,omitempty"`
+	KeepalivePool *UpstreamKeepAlivePoolType `json:"keepalive_pool,omitempty"`
+	TLS           *UpstreamTLSType           `json:"tls,omitempty"`
+	Checks        *UpstreamChecksType        `json:"checks,omitempty"`
+	Nodes         *[]UpstreamNodeType        `json:"nodes,omitempty"`
 }
 
 type TimeoutType struct {
@@ -42,8 +42,10 @@ type UpstreamKeepAlivePoolType struct {
 	Requests    int64 `json:"requests"`
 }
 
-type UpstreamTLS struct {
-	ClientCertID string `json:"client_cert_id"`
+type UpstreamTLSType struct {
+	ClientCertID string `json:"client_cert_id,omitempty"`
+	ClientCert   string `json:"client_cert,omitempty"`
+	ClientKey    string `json:"client_key,omitempty"`
 }
 
 type UpstreamChecksType struct {
