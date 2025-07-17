@@ -43,9 +43,15 @@ type UpstreamKeepAlivePoolType struct {
 }
 
 type UpstreamTLSType struct {
+<<<<<<< Updated upstream
 	ClientCertID string `json:"client_cert_id,omitempty"`
 	ClientCert   string `json:"client_cert,omitempty"`
 	ClientKey    string `json:"client_key,omitempty"`
+=======
+	ClientCertID *string `json:"client_cert_id,omitempty"`
+	ClientCert   *string `json:"client_cert,omitempty"`
+	ClientKey    *string `json:"client_key,omitempty"`
+>>>>>>> Stashed changes
 }
 
 type UpstreamChecksType struct {
