@@ -54,32 +54,32 @@ func normalizeJSON(data map[string]interface{}) map[string]interface{} {
 func (pm PluginMetadata) MarshalJSON() ([]byte, error) {
 	result := make(map[string]interface{})
 
-	fmt.Printf("DEBUG MarshalJSON: pm.Id = %v\n", pm.Id)
-	fmt.Printf("DEBUG MarshalJSON: pm.Metadata = %v\n", pm.Metadata)
+	//fmt.Printf("DEBUG MarshalJSON: pm.Id = %v\n", pm.Id)
+	//fmt.Printf("DEBUG MarshalJSON: pm.Metadata = %v\n", pm.Metadata)
 
 	// Add ID if present
 	if pm.Id != nil {
 		result["id"] = *pm.Id
-		fmt.Printf("DEBUG MarshalJSON: Added ID: %s\n", *pm.Id)
+		//fmt.Printf("DEBUG MarshalJSON: Added ID: %s\n", *pm.Id)
 	}
 
 	// Add metadata content directly as provided by user
 	if pm.Metadata != nil && len(*pm.Metadata) > 0 {
 		normalizedMetadata := normalizeJSON(*pm.Metadata)
-		fmt.Printf("DEBUG MarshalJSON: Metadata to add: %+v\n", normalizedMetadata)
+		//fmt.Printf("DEBUG MarshalJSON: Metadata to add: %+v\n", normalizedMetadata)
 
 		// Add all metadata fields directly to the result
 		for key, value := range normalizedMetadata {
 			result[key] = value
-			fmt.Printf("DEBUG MarshalJSON: Added field %s: %+v\n", key, value)
+			//fmt.Printf("DEBUG MarshalJSON: Added field %s: %+v\n", key, value)
 		}
 	} else {
-		fmt.Printf("DEBUG MarshalJSON: No metadata to add\n")
+		//fmt.Printf("DEBUG MarshalJSON: No metadata to add\n")
 	}
 
-	fmt.Printf("DEBUG MarshalJSON: Final result: %+v\n", result)
+	//fmt.Printf("DEBUG MarshalJSON: Final result: %+v\n", result)
 	finalJSON, err := json.Marshal(result)
-	fmt.Printf("DEBUG MarshalJSON: Final JSON: %s\n", string(finalJSON))
+	//fmt.Printf("DEBUG MarshalJSON: Final JSON: %s\n", string(finalJSON))
 	return finalJSON, err
 }
 
@@ -119,37 +119,6 @@ func (pm *PluginMetadata) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// CreatePluginMetadata - creates a new plugin metadata
-func (c *ApiClient) CreatePluginMetadata(Id string, metadata PluginMetadata) (*PluginMetadata, error) {
-	// Ensure plugin name is set
-	metadata.Id = &Id
-
-	// Marshal with custom method
-	rb, err := json.Marshal(metadata)
-	if err != nil {
-		return nil, err
-	}
-
-	// Debug: Log what we're sending to APISIX
-	fmt.Printf("DEBUG: Sending to APISIX for plugin %s: %s\n", Id, string(rb))
-
-	req, err := http.NewRequest("PUT", fmt.Sprintf("%s/apisix/admin/plugin_metadata/%s", c.Endpoint, Id), strings.NewReader(string(rb)))
-	if err != nil {
-		return nil, err
-	}
-	req.Header.Set("Content-Type", "application/json")
-
-	body, err := c.doRequest(req)
-	if err != nil {
-		return nil, err
-	}
-
-	// Debug: Log APISIX response
-	fmt.Printf("DEBUG: APISIX response: %s\n", string(body))
-
-	return &metadata, nil
-}
-
 // GetPluginMetadata - retrieves a plugin metadata
 func (c *ApiClient) GetPluginMetadata(Id string) (*PluginMetadata, error) {
 	req, err := http.NewRequest("GET", fmt.Sprintf("%s/apisix/admin/plugin_metadata/%s", c.Endpoint, Id), nil)
@@ -169,6 +138,43 @@ func (c *ApiClient) GetPluginMetadata(Id string) (*PluginMetadata, error) {
 	}
 
 	return &getResponse.Value, nil
+}
+
+// CreatePluginMetadata - creates a new plugin metadata
+func (c *ApiClient) CreatePluginMetadata(Id string, metadata PluginMetadata) (*PluginMetadata, error) {
+	// Ensure plugin name is set
+	metadata.Id = &Id
+
+	// Marshal with custom method
+	rb, err := json.Marshal(metadata)
+	if err != nil {
+		return nil, err
+	}
+
+	// Debug: Log what we're sending to APISIX
+	//fmt.Printf("DEBUG: Sending to APISIX for plugin %s: %s\n", Id, string(rb))
+
+	req, err := http.NewRequest("PUT", fmt.Sprintf("%s/apisix/admin/plugin_metadata/%s", c.Endpoint, Id), strings.NewReader(string(rb)))
+	if err != nil {
+		return nil, err
+	}
+	req.Header.Set("Content-Type", "application/json")
+
+	body, err := c.doRequest(req)
+	if err != nil {
+		return nil, err
+	}
+
+	creationResponse := PluginMetadataAPIResponse{}
+	err = json.Unmarshal(body, &creationResponse)
+	if err != nil {
+		return nil, err
+	}
+
+	// Debug: Log APISIX response
+	//fmt.Printf("DEBUG: APISIX response: %s\n", string(body))
+
+	return &creationResponse.Value, nil
 }
 
 // UpdatePluginMetadata - updates an existing plugin metadata
