@@ -9,7 +9,15 @@ import (
 )
 
 type Secret interface {
-	IsSecret()
+	GetID() string
+}
+
+type BaseSecret struct {
+	ID string `json:"id"`
+}
+
+func (b *BaseSecret) GetID() string {
+	return b.ID
 }
 
 type SecretManager string
@@ -21,15 +29,15 @@ const (
 )
 
 type VaultSecret struct {
+	BaseSecret
 	Uri       *string `json:"uri"`
 	Prefix    *string `json:"prefix"`
 	Token     *string `json:"token"`
 	Namespace *string `json:"namespace,omitempty"`
 }
 
-func (s *VaultSecret) IsSecret() {}
-
 type AWSSecret struct {
+	BaseSecret
 	AccessKeyId     *string `json:"access_key_id"`
 	SecretAccessKey *string `json:"secret_access_key"`
 	SessionToken    *string `json:"session_token,omitempty"`
@@ -37,15 +45,12 @@ type AWSSecret struct {
 	EndpointUrl     *string `json:"endpoint_url,omitempty"`
 }
 
-func (s *AWSSecret) IsSecret() {}
-
 type GCPSecret struct {
+	BaseSecret
 	AuthConfig *AuthConfigType `json:"auth_config,omitempty"`
 	AuthFile   *string         `json:"auth_file,omitempty"`
 	SslVerify  *bool           `json:"ssl_verify,omitempty"`
 }
-
-func (s *GCPSecret) IsSecret() {}
 
 type AuthConfigType struct {
 	ClientEmail *string `json:"client_email"`
@@ -53,7 +58,7 @@ type AuthConfigType struct {
 	ProjectId   *string `json:"project_id"`
 	TokenUri    *string `json:"token_uri,omitempty"`
 	EntriesUri  *string `json:"entries_uri,omitempty"`
-	Scope       *string `json:"scope,omitempty"`
+	Scope       *[]string `json:"scope,omitempty"`
 }
 
 type SecretAPIResponse struct {
@@ -106,13 +111,13 @@ func (c *ApiClient) GetSecret(secretManager SecretManager, secretID string) (Sec
 }
 
 // CreateSecret - Create a secret
-func (c *ApiClient) CreateSecret(secretManager SecretManager, secret Secret) (Secret, error) {
+func (c *ApiClient) CreateSecret(secretManager SecretManager, secretID string, secret Secret) (Secret, error) {
 	rb, err := json.Marshal(secret)
 	if err != nil {
 		return nil, err
 	}
 
-	req, err := http.NewRequest("PUT", fmt.Sprintf("%s/apisix/admin/secrets/%s", c.Endpoint, secretManager), strings.NewReader(string(rb)))
+	req, err := http.NewRequest("PUT", fmt.Sprintf("%s/apisix/admin/secrets/%s/%s", c.Endpoint, secretManager, secretID), strings.NewReader(string(rb)))
 	if err != nil {
 		return nil, err
 	}
