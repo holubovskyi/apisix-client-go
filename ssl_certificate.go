@@ -8,6 +8,12 @@ import (
 	"strings"
 )
 
+type SSLClient struct {
+	CA               *string   `json:"ca,omitempty"`
+	Depth            *int64    `json:"depth,omitempty"`
+	SkipMtlsUriRegex *[]string `json:"skip_mtls_uri_regex,omitempty"`
+}
+
 type SSLCertificate struct {
 	ID            *string            `json:"id,omitempty"`
 	Status        *int64             `json:"status"`
@@ -15,6 +21,7 @@ type SSLCertificate struct {
 	PrivateKey    *string            `json:"key"`
 	SNIs          *[]string          `json:"snis"`
 	Type          *string            `json:"type"`
+	Client        *SSLClient         `json:"client,omitempty"`
 	ValidityStart *int64             `json:"validity_start,omitempty"`
 	ValidityEnd   *int64             `json:"validity_end,omitempty"`
 	Labels        *map[string]string `json:"labels,omitempty"`
